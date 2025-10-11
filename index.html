@@ -4,7 +4,8 @@
   
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0"><link rel="shortcut icon" href="//www.amavaperfumes.com/cdn/shop/files/Untitled_design_-_2025-06-17T223957.971.png?crop=center&height=48&v=1750192767&width=48" type="image/png" /><title>No.1 Fragrance house in Africa &ndash; Amava Perfumes</title><meta name="description" content="High quality niche fragrances at low prices">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0"><link rel="shortcut icon" href="//www.amavaperfumes.com/cdn/shop/files/Untitled_design_-_2025-06-17T223957.971.png?crop=center&height=48&v=1750192767&width=48" type="image/png" /><title>No.1 Fragrance house in Africa &ndash; Amava Perfumes
+</title><meta name="description" content="High quality niche fragrances at low prices">
 
 <meta property="og:site_name" content="Amava Perfumes">
 <meta property="og:url" content="https://www.amavaperfumes.com/">
@@ -7284,5 +7285,110 @@ jdgm.loadJS(jdgm.CDN_HOST+"loader.js"))}))}(document);
 </script>
 
 
-</div></body>
+</div>
+
+<!-- Amanzada Perfumes Chat Widget (branded colors) -->
+<script>
+  window.ChatWidgetConfig = {
+    webhook: {
+      url: 'https://n8n.lasmarts.win/webhook/9c33f18a-5341-46de-a656-4f6a62e83391/chat',
+      route: 'general',
+    },
+    branding: {
+      logo: 'https://amanzadaperfumes.co.za/wp-content/uploads/2024/06/logo.png', // update if needed
+      name: 'Amanzada Perfumes',
+      welcomeText: 'Get instant answers to your questions!',
+      responseTimeText: 'CLICK the button below to start Chatting',
+    },
+    style: {
+      primaryColor: '#bfa17a',   /* a muted gold / champagne */
+      secondaryColor: '#8c6e4b', /* darker “gold / bronze” accent */
+      position: 'left',
+      backgroundColor: '#faf5ee', /* warm cream / off-white */
+      fontColor: '#2c2a29',       /* deep charcoal / near black */
+    },
+    suggestedQuestions: [
+      'What are your best-selling perfumes?',
+      'How do I choose the right fragrance?',
+      'What are your shipping options?',
+      'Do you offer samples?'
+    ]
+  };
+</script>
+
+<script src="https://cdn.jsdelivr.net/gh/funtastic418/chat-widget@main/chat-widget.js"></script>
+
+<style>
+  .chat-widget small:contains("powered"),
+  .chat-widget small:contains("n8n"),
+  .chat-widget .attribution,
+  .chat-widget .powered-by,
+  .chat-widget a[href*="n8n"] {
+    color: white !important;
+    background-color: white !important;
+    font-size: 0.1px !important;
+    pointer-events: none !important;
+    user-select: none !important;
+  }
+</style>
+
+<script>
+  function hideBrandingOnly() {
+    document.querySelectorAll('*').forEach(el => {
+      if (el.children.length === 0 && el.textContent) {
+        const text = el.textContent.trim().toLowerCase();
+        if (
+          text === 'powered by n8n' ||
+          text === 'powered by' ||
+          (text.includes('powered by') && text.length < 30)
+        ) {
+          el.style.color = 'white';
+          el.style.backgroundColor = 'white';
+          el.style.fontSize = '0.1px';
+          el.style.pointerEvents = 'none';
+          el.style.userSelect = 'none';
+        }
+      }
+    });
+  }
+
+  function fixLinksToSameTab() {
+    const chatWidget = document.querySelector('.chat-widget') || document.body;
+    chatWidget.querySelectorAll('a').forEach(link => {
+      if (link.getAttribute('target') === '_blank') link.removeAttribute('target');
+      link.addEventListener('click', function (e) {
+        if (this.href && (this.href.startsWith('http://') || this.href.startsWith('https://'))) {
+          e.preventDefault();
+          window.location.href = this.href;
+        }
+      }, true);
+    });
+  }
+
+  setTimeout(() => {
+    hideBrandingOnly();
+    fixLinksToSameTab();
+    let checkCount = 0;
+    const brandingCheck = setInterval(() => {
+      hideBrandingOnly();
+      fixLinksToSameTab();
+      if (++checkCount > 15) clearInterval(brandingCheck);
+    }, 2000);
+  }, 5000);
+
+  const observer = new MutationObserver(mutations => {
+    let shouldCheckLinks = mutations.some(m =>
+      m.type === 'childList' && m.addedNodes.length > 0
+    );
+    if (shouldCheckLinks) setTimeout(fixLinksToSameTab, 100);
+  });
+
+  setTimeout(() => {
+    const target = document.querySelector('.chat-widget') || document.body;
+    observer.observe(target, { childList: true, subtree: true });
+  }, 6000);
+</script>	  
+  
+  </body>
+
   </html>
