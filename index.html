@@ -7287,108 +7287,72 @@ jdgm.loadJS(jdgm.CDN_HOST+"loader.js"))}))}(document);
 
 </div>
 
-<!-- Amanzada Perfumes Chat Widget (branded colors) -->
-<script>
-  window.ChatWidgetConfig = {
-    webhook: {
-      url: 'https://n8n.lasmarts.win/webhook/9c33f18a-5341-46de-a656-4f6a62e83391/chat',
-      route: 'general',
-    },
-    branding: {
-      logo: 'https://amanzadaperfumes.co.za/wp-content/uploads/2024/06/logo.png', // update if needed
-      name: 'Amanzada Perfumes',
-      welcomeText: 'Get instant answers to your questions!',
-      responseTimeText: 'CLICK the button below to start Chatting',
-    },
-    style: {
-      primaryColor: '#bfa17a',   /* a muted gold / champagne */
-      secondaryColor: '#8c6e4b', /* darker “gold / bronze” accent */
-      position: 'left',
-      backgroundColor: '#faf5ee', /* warm cream / off-white */
-      fontColor: '#2c2a29',       /* deep charcoal / near black */
-    },
-    suggestedQuestions: [
-      'What are your best-selling perfumes?',
-      'How do I choose the right fragrance?',
-      'What are your shipping options?',
-      'Do you offer samples?'
-    ]
-  };
+	 <script>
+  (function() {
+    const chatConfig = {
+      botName: "Amava Perfumes Assistant",
+      welcomeText: "Get instant answers to your questions!",
+      responseTimeText: "CLICK the button below to start Chatting",
+      suggestedQuestions: [
+        "What are your best-selling perfumes?",
+        "How do I choose the right fragrance?",
+        "What are your shipping options?",
+        "Do you offer samples?"
+      ],
+      webhookUrl: "https://n8n.lasmarts.win/webhook/9c33f18a-5341-46de-a656-4f6a62e83391/chat",
+      themeColor: "#D4AF37", // Gold
+      backgroundColor: "#ffffff", // White
+      textColor: "#000000", // Black text
+      buttonColor: "#D4AF37", // Gold button
+      buttonTextColor: "#ffffff"
+    };
+
+    const chatBtn = document.createElement("div");
+    chatBtn.innerHTML = "💬 Chat with us";
+    chatBtn.style.position = "fixed";
+    chatBtn.style.bottom = "20px";
+    chatBtn.style.right = "20px";
+    chatBtn.style.background = chatConfig.buttonColor;
+    chatBtn.style.color = chatConfig.buttonTextColor;
+    chatBtn.style.padding = "12px 20px";
+    chatBtn.style.borderRadius = "30px";
+    chatBtn.style.cursor = "pointer";
+    chatBtn.style.fontWeight = "bold";
+    chatBtn.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+    chatBtn.style.zIndex = "9999";
+
+    const chatBox = document.createElement("div");
+    chatBox.style.display = "none";
+    chatBox.style.position = "fixed";
+    chatBox.style.bottom = "80px";
+    chatBox.style.right = "20px";
+    chatBox.style.width = "360px";
+    chatBox.style.height = "520px";
+    chatBox.style.background = chatConfig.backgroundColor;
+    chatBox.style.border = "1px solid #ddd";
+    chatBox.style.borderRadius = "12px";
+    chatBox.style.boxShadow = "0 6px 20px rgba(0,0,0,0.2)";
+    chatBox.style.overflow = "hidden";
+    chatBox.style.zIndex = "9999";
+
+    const iframe = document.createElement("iframe");
+    iframe.src = chatConfig.webhookUrl;
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
+    chatBox.appendChild(iframe);
+
+    chatBtn.onclick = () => {
+      chatBox.style.display = chatBox.style.display === "none" ? "block" : "none";
+    };
+
+    document.body.appendChild(chatBtn);
+    document.body.appendChild(chatBox);
+  })();
 </script>
+ 
 
-<script src="https://cdn.jsdelivr.net/gh/funtastic418/chat-widget@main/chat-widget.js"></script>
-
-<style>
-  .chat-widget small:contains("powered"),
-  .chat-widget small:contains("n8n"),
-  .chat-widget .attribution,
-  .chat-widget .powered-by,
-  .chat-widget a[href*="n8n"] {
-    color: white !important;
-    background-color: white !important;
-    font-size: 0.1px !important;
-    pointer-events: none !important;
-    user-select: none !important;
-  }
-</style>
-
-<script>
-  function hideBrandingOnly() {
-    document.querySelectorAll('*').forEach(el => {
-      if (el.children.length === 0 && el.textContent) {
-        const text = el.textContent.trim().toLowerCase();
-        if (
-          text === 'powered by n8n' ||
-          text === 'powered by' ||
-          (text.includes('powered by') && text.length < 30)
-        ) {
-          el.style.color = 'white';
-          el.style.backgroundColor = 'white';
-          el.style.fontSize = '0.1px';
-          el.style.pointerEvents = 'none';
-          el.style.userSelect = 'none';
-        }
-      }
-    });
-  }
-
-  function fixLinksToSameTab() {
-    const chatWidget = document.querySelector('.chat-widget') || document.body;
-    chatWidget.querySelectorAll('a').forEach(link => {
-      if (link.getAttribute('target') === '_blank') link.removeAttribute('target');
-      link.addEventListener('click', function (e) {
-        if (this.href && (this.href.startsWith('http://') || this.href.startsWith('https://'))) {
-          e.preventDefault();
-          window.location.href = this.href;
-        }
-      }, true);
-    });
-  }
-
-  setTimeout(() => {
-    hideBrandingOnly();
-    fixLinksToSameTab();
-    let checkCount = 0;
-    const brandingCheck = setInterval(() => {
-      hideBrandingOnly();
-      fixLinksToSameTab();
-      if (++checkCount > 15) clearInterval(brandingCheck);
-    }, 2000);
-  }, 5000);
-
-  const observer = new MutationObserver(mutations => {
-    let shouldCheckLinks = mutations.some(m =>
-      m.type === 'childList' && m.addedNodes.length > 0
-    );
-    if (shouldCheckLinks) setTimeout(fixLinksToSameTab, 100);
-  });
-
-  setTimeout(() => {
-    const target = document.querySelector('.chat-widget') || document.body;
-    observer.observe(target, { childList: true, subtree: true });
-  }, 6000);
-</script>	  
-  
   </body>
 
   </html>
+
