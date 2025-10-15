@@ -7294,7 +7294,7 @@ jdgm.loadJS(jdgm.CDN_HOST+"loader.js"))}))}(document);
       route: 'general',
     },
     branding: {
-      logo: 'https://www.amavaperfumes.com/path-to-your-logo.png',  // replace with real logo URL from Amava
+      logo: 'https://www.amavaperfumes.com/path-to-your-logo.png',
       name: 'Amava Perfumes',
       welcomeText: 'Get instant answers to your questions!',
       responseTimeText: 'CLICK the button below to start Chatting',
@@ -7314,40 +7314,51 @@ jdgm.loadJS(jdgm.CDN_HOST+"loader.js"))}))}(document);
     ]
   };
 </script>
-
 <script src="https://cdn.jsdelivr.net/gh/funtastic418/chat-widget@main/chat-widget.js"></script>
-
 <style>
-  .chat-widget small:contains("powered"),
-  .chat-widget small:contains("n8n"),
   .chat-widget .attribution,
   .chat-widget .powered-by,
-  .chat-widget a[href*="n8n"] {
-    color: white !important;
-    background-color: white !important;
-    font-size: 0.1px !important;
-    pointer-events: none !important;
-    user-select: none !important;
+  .chat-widget footer,
+  .chat-widget a[href*="n8n"],
+  .chat-widget [class*="branding"],
+  .chat-widget [class*="footer"],
+  .chat-widget [class*="attribution"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
   }
 </style>
-
 <script>
-  function hideBrandingOnly() {
-    document.querySelectorAll('*').forEach(el => {
+  function removeBranding() {
+    // Find and hide any element containing "powered by n8n" or similar text
+    document.querySelectorAll('.chat-widget *').forEach(el => {
       if (el.children.length === 0 && el.textContent) {
         const text = el.textContent.trim().toLowerCase();
         if (
-          text === 'powered by n8n' ||
-          text === 'powered by' ||
-          (text.includes('powered by') && text.length < 30)
+          text.includes('powered by n8n') ||
+          text.includes('powered by') ||
+          text === 'n8n' ||
+          (text.includes('n8n') && text.length < 50)
         ) {
-          el.style.color = 'white';
-          el.style.backgroundColor = 'white';
-          el.style.fontSize = '0.1px';
-          el.style.pointerEvents = 'none';
-          el.style.userSelect = 'none';
+          el.style.display = 'none';
+          el.style.visibility = 'hidden';
+          el.style.opacity = '0';
+          el.style.height = '0';
+          el.style.overflow = 'hidden';
+          // Also hide parent if it's a small container
+          if (el.parentElement && el.parentElement.children.length === 1) {
+            el.parentElement.style.display = 'none';
+          }
         }
       }
+    });
+    
+    // Remove any links to n8n
+    document.querySelectorAll('.chat-widget a[href*="n8n"]').forEach(link => {
+      link.style.display = 'none';
+      if (link.parentElement) link.parentElement.style.display = 'none';
     });
   }
 
@@ -7364,34 +7375,51 @@ jdgm.loadJS(jdgm.CDN_HOST+"loader.js"))}))}(document);
     });
   }
 
+  // Run immediately when widget loads
   setTimeout(() => {
-    hideBrandingOnly();
+    removeBranding();
     fixLinksToSameTab();
-    let checkCount = 0;
-    const brandingCheck = setInterval(() => {
-      hideBrandingOnly();
-      fixLinksToSameTab();
-      if (++checkCount > 15) clearInterval(brandingCheck);
-    }, 2000);
+  }, 1000);
+
+  // Run multiple times to catch delayed content
+  setTimeout(() => {
+    removeBranding();
+    fixLinksToSameTab();
+  }, 3000);
+
+  setTimeout(() => {
+    removeBranding();
+    fixLinksToSameTab();
   }, 5000);
 
-  const observer = new MutationObserver(mutations => {
-    let shouldCheck = mutations.some(m =>
-      m.type === 'childList' && m.addedNodes.length > 0
-    );
-    if (shouldCheck) setTimeout(fixLinksToSameTab, 100);
+  // Set up continuous monitoring
+  const observer = new MutationObserver(() => {
+    removeBranding();
+    fixLinksToSameTab();
   });
 
   setTimeout(() => {
     const target = document.querySelector('.chat-widget') || document.body;
-    observer.observe(target, { childList: true, subtree: true });
-  }, 6000);
-</script>
+    observer.observe(target, { 
+      childList: true, 
+      subtree: true,
+      characterData: true 
+    });
+  }, 2000);
 
+  // Also run periodically for the first minute
+  let checkCount = 0;
+  const intervalCheck = setInterval(() => {
+    removeBranding();
+    fixLinksToSameTab();
+    if (++checkCount > 20) clearInterval(intervalCheck);
+  }, 2000);
+</script>
 
   </body>
 
   </html>
+
 
 
 
